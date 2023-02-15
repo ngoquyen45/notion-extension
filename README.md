@@ -18,8 +18,8 @@ To use this program, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Open a command prompt or terminal window and navigate to the directory where the repository is located.
-3. Run the program with the command `go run notion-control-box-hider.go`. This will modify the Notion application file `WindowController.js` to remove the control box window.
-4. If you want to revert the changes made by the program, run it with the command `go run notion-control-box-hider.go -reset`.
+3. Run the program with the command `go run notion-extension.go`. This will modify the Notion application file `WindowController.js` to remove the control box window.
+4. If you want to revert the changes made by the program, run it with the command `go run notion-extension.go -reset`.
 
 Note: This program modifies the Notion application file, so use it at your own risk. It's always a good idea to make a backup of the file before making any changes.
 
