@@ -4,22 +4,25 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
 
 func main() {
 	// replace this string
-	oldStr := `const windowCreationArgs = Object.assign(Object.assign({}, desiredWindowBounds), { show: false, backgroundColor: colorHelpers_1.electronColors.notionBackground[state_1.Store.getState().app.theme.mode], titleBarStyle: "hiddenInset", trafficLightPosition: isTabsFeatureEnabled`
+	oldStr := `const windowCreationArgs = Object.assign(Object.assign({}, desiredWindowBounds), { show: false, backgroundColor: colorHelpers_1.electronColors.notionBackground[state_1.Store.getState().app.theme.mode]`
 	// with this string
-	newStr := `const windowCreationArgs = Object.assign(Object.assign({}, desiredWindowBounds), { show: false, frame: false, backgroundColor: colorHelpers_1.electronColors.notionBackground[state_1.Store.getState().app.theme.mode], titleBarStyle: "hiddenInset", trafficLightPosition: isTabsFeatureEnabled`
+	newStr := `const windowCreationArgs = Object.assign(Object.assign({}, desiredWindowBounds), { show: false, frame: false, backgroundColor: colorHelpers_1.electronColors.notionBackground[state_1.Store.getState().app.theme.mode]`
 
 	// get the file path
 	appData, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
 	}
-	filePath := filepath.Join(appData, "AppData", "Local", "Programs", "Notion", "resources", "app", "main", "WindowController.js")
+
+	notionPath := filepath.Join(appData, "AppData", "Local", "Programs", "Notion")
+	filePath := filepath.Join(notionPath, "resources", "app", "main", "WindowController.js")
 
 	// read the file
 	bytes, err := ioutil.ReadFile(filePath)
@@ -41,5 +44,23 @@ func main() {
 		panic(err)
 	}
 
+	restartNotion()
+
 	fmt.Println("Done!")
 }
+
+func restartNotion() {
+	appData, _ := os.UserHomeDir()
+    notionPath := filepath.Join(appData, "AppData", "Local", "Programs", "Notion")
+    
+    // Kill Notion.exe
+    cmd := exec.Command("taskkill", "/f", "/im", "Notion.exe")
+    cmd.Start()
+    cmd.Wait()
+    // Start Notion.exe again
+    cmd = exec.Command(filepath.Join(notionPath, "Notion.exe"))
+    cmd.Start()
+}
+
+
+
